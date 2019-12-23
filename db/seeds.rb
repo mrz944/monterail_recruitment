@@ -5,3 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+e = Event.create(name: 'Best event ever', date: DateTime.now + 1.year)
+
+TicketType.create(
+  name: 'standing', places: 100, event: e,
+  selling_options: [
+    TicketType::SELLING_OPTIONS[:even]
+  ]
+)
+
+TicketType.create(
+  name: 'sitting', places: 50, event: e,
+  selling_options: [
+    TicketType::SELLING_OPTIONS[:even],
+    TicketType::SELLING_OPTIONS[:avoid_one]
+  ]
+)
+
+TicketType.create(
+  name: 'balcony', places: 10, event: e,
+  selling_options: [
+    TicketType::SELLING_OPTIONS[:all_together]
+  ]
+)
