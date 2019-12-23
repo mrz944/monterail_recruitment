@@ -31,9 +31,9 @@ class ReservationsController < ApplicationController
     Payment::Gateway.charge(amount: reservation.amount, token: payment_params[:token])
     reservation.make_paid
 
-    render plain: 'OK'
+    render plain: 'OK', status: :ok
   rescue Payment::Gateway::CardError, Payment::Gateway::PaymentError
-    render plain: 'ERROR'
+    render plain: 'ERROR', status: :unprocessable_entity
   end
 
   private
