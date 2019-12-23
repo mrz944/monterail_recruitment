@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  host: db
   database: monterail_recruitment_production
-  username: monterail_recruitment
-  password: <%= ENV['MONTERAIL_RECRUITMENT_DATABASE_PASSWORD'] %>
+  username: postgres
+  password:
