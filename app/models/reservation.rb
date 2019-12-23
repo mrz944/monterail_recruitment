@@ -11,9 +11,9 @@ class Reservation < ApplicationRecord
 
   after_save :clear_unpaid
 
-  STATUSES.keys.each do |status|
-    define_method "#{status}?" do
-      status == STATUSES[status]
+  STATUSES.keys.each do |s|
+    define_method "#{s}?" do
+      status == STATUSES[s]
     end
   end
 
