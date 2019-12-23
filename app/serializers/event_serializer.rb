@@ -3,6 +3,6 @@ class EventSerializer
   attributes :name, :date
 
   attribute :ticket_types do |object|
-    object.ticket_types.map(&:name)
+    TicketTypeSerializer.new(object.ticket_types).as_json['data']
   end
 end

@@ -18,4 +18,12 @@ class TicketType < ApplicationRecord
       selling_options.include? SELLING_OPTIONS[selling_option]
     end
   end
+
+  def available_for_sale
+    available_places > 0
+  end
+
+  def available_places
+    places - ticket_reservations.sum(:places)
+  end
 end
