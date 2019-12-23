@@ -9,9 +9,15 @@ class Reservation < ApplicationRecord
 
   validates :status, presence: true
 
+  after_save :clear_unpaid
+
   STATUSES.keys.each do |status|
     define_method "#{status}?" do
       status == STATUSES[status]
     end
+  end
+
+  def clear_unpaid
+    ReservationWorker.perform_at(15.minutes.from_now, id)
   end
 end
