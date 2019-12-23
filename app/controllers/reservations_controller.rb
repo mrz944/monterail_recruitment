@@ -24,6 +24,18 @@ class ReservationsController < ApplicationController
     end
   end
 
+  # POST /reservations/payment_gateway
+  def payment_gateway
+    reservation = Reservation.find(payment_params[:reservation_id])
+
+    Payment::Gateway.charge(amount: reservation.amount, token: payment_params[:token])
+    reservation.make_paid
+
+    render plain: 'OK'
+  rescue Payment::Gateway::CardError, Payment::Gateway::PaymentError
+    render plain: 'ERROR'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
@@ -33,5 +45,9 @@ class ReservationsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def reservation_params
       params.require(:reservation).permit(:event_id, :ticket_type_id, :places)
+    end
+
+    def payment_params
+      params.require(:payment).permit(:reservation_id, :token)
     end
 end

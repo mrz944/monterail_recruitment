@@ -17,7 +17,15 @@ class Reservation < ApplicationRecord
     end
   end
 
+  def amount
+    ticket_types.sum(:price)
+  end
+
   def clear_unpaid
     ReservationWorker.perform_at(15.minutes.from_now, id)
+  end
+
+  def make_paid
+    update_attribute(:status, STATUSES[:paid])
   end
 end
