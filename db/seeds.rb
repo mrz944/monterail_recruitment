@@ -9,14 +9,14 @@
 e = Event.create(name: 'Best event ever', date: DateTime.now + 1.year)
 
 TicketType.create(
-  name: 'standing', places: 100, event: e,
+  name: 'standing', places: 100, price: 33.0, event: e,
   selling_options: [
     TicketType::SELLING_OPTIONS[:even]
   ]
 )
 
 TicketType.create(
-  name: 'sitting', places: 50, event: e,
+  name: 'sitting', places: 50, price: 66.0, event: e,
   selling_options: [
     TicketType::SELLING_OPTIONS[:even],
     TicketType::SELLING_OPTIONS[:avoid_one]
@@ -24,7 +24,7 @@ TicketType.create(
 )
 
 TicketType.create(
-  name: 'balcony', places: 10, event: e,
+  name: 'balcony', places: 10, price: 99.0, event: e,
   selling_options: [
     TicketType::SELLING_OPTIONS[:all_together]
   ]

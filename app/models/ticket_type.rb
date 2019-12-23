@@ -11,6 +11,7 @@ class TicketType < ApplicationRecord
 
   validates :name, presence: true
   validates :places, presence: true
+  validates :price, presence: true
   validates :selling_options, presence: true
 
   SELLING_OPTIONS.keys.each do |selling_option|
