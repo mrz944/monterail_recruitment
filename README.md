@@ -1,24 +1,33 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting started
 
-Things you may want to cover:
+1. Build docker container:
 
-* Ruby version
+        $ docker-compose build
 
-* System dependencies
+2. Run migrations:
 
-* Configuration
+        $ docker-compose run web rails db:create db:setup
 
-* Database creation
+3. Start up the server:
 
-* Database initialization
+        $ docker-compose up
 
-* How to run the test suite
+## Usage examples
 
-* Services (job queues, cache servers, search engines, etc.)
+1. Get info about an event and its tickets
 
-* Deployment instructions
+        $ curl -H "Accept: application/json" -H "Content-type: application/json" $(docker-machine ip):3000/events/1
 
-* ...
+2. Reserve ticket:
+
+        $ curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"reservation": {"event_id": "1", "ticket_type_id": "1", "places": "10"}}' $(docker-machine ip):3000/reservations
+
+3. Pay for ticket:
+
+        $ curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"payment": {"reservation_id": "1", "token":"success"}}' $(docker-machine ip):3000/reservations/payment_gateway
+
+4. Get info about reservation:
+
+        $ curl -H "Accept: application/json" -H "Content-type: application/json" $(docker-machine ip):3000/reservations/1
