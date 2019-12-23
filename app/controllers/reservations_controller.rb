@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1
   def show
-    render json: @reservation
+    render json: ReservationSerializer.new(@reservation)
   end
 
   # POST /reservations
