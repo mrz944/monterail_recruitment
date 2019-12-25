@@ -32,14 +32,6 @@ RSpec.describe ReservationsController, type: :controller do
     create(:ticket_type, event: event,
            places: 100, selling_options: [TicketType::SELLING_OPTIONS[:even]])
   end
-  let(:ticket_type_all_together) do
-    create(:ticket_type, event: event,
-           places: 100, selling_options: [TicketType::SELLING_OPTIONS[:all_together]])
-  end
-  let(:ticket_type_avoid_one) do
-    create(:ticket_type, event: event,
-           places: 100, selling_options: [TicketType::SELLING_OPTIONS[:avoid_one]])
-  end
 
   let(:reservation) do
     create(:reservation, ticket_reservations: [build(:ticket_reservation, ticket_type: ticket_type_even)])
@@ -53,16 +45,26 @@ RSpec.describe ReservationsController, type: :controller do
   end
 
   describe "POST #create" do
+    
+    let(:ticket_type_all_together) do
+      create(:ticket_type, event: event,
+             places: 100, selling_options: [TicketType::SELLING_OPTIONS[:all_together]])
+    end
+    let(:ticket_type_avoid_one) do
+      create(:ticket_type, event: event,
+             places: 100, selling_options: [TicketType::SELLING_OPTIONS[:avoid_one]])
+    end
+
     let(:valid_reservation_attributes) do
       { event_id: event.id, ticket_type_id: ticket_type_even.id, places: 10 }
     end
     let(:invalid_even_reservation_attributes) do
       { event_id: event.id, ticket_type_id: ticket_type_even.id, places: 11 }
     end
-    let(:invalid_even_reservation_all_together) do
+    let(:invalid_all_together_reservation) do
       { event_id: event.id, ticket_type_id: ticket_type_all_together.id, places: 10 }
     end
-    let(:invalid_even_reservation_avoid_one) do
+    let(:invalid_avoid_one_reservation) do
       { event_id: event.id, ticket_type_id: ticket_type_avoid_one.id, places: 99 }
     end
 
@@ -90,17 +92,25 @@ RSpec.describe ReservationsController, type: :controller do
       end
     end
 
-    context "with invalid params for tick_type with all_together selling_options" do
+    context "with invalid tick_type params with even selling_options" do
       it "renders a JSON response with errors for the new reservation" do
-        post :create, params: { reservation: invalid_even_reservation_all_together }
+        post :create, params: { reservation: invalid_even_reservation_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
 
-    context "with invalid params for tick_type with avoid_one selling_options" do
+    context "with invalid tick_type params with all_together selling_options" do
       it "renders a JSON response with errors for the new reservation" do
-        post :create, params: { reservation: invalid_even_reservation_avoid_one }
+        post :create, params: { reservation: invalid_all_together_reservation }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to eq('application/json; charset=utf-8')
+      end
+    end
+
+    context "with invalid tick_type params with avoid_one selling_options" do
+      it "renders a JSON response with errors for the new reservation" do
+        post :create, params: { reservation: invalid_avoid_one_reservation }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
